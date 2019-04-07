@@ -29,7 +29,6 @@ typedef enum {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // sort of start initialization
     UIColor* colour = [[UIColor alloc]initWithRed:128.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
     self.darkCellColour = colour;  // default
     self.chessboardViews = [[NSMutableArray alloc] init];
@@ -43,7 +42,6 @@ typedef enum {
     border.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin |
                             UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     
-    // для храсоты! раз уж ширина экрана нечетная - сделаем контур у доски! а ячейки оставим одинаковых размеров
     int cellWidth = (int)(screenWidth / 8);
     int boardWidth = cellWidth * 8;
     int indent = (int)((screenWidth - boardWidth) / 2);
@@ -59,25 +57,18 @@ typedef enum {
     int checkerIndent = 4;
     int checkerWidth = cellWidth - checkerIndent * 2;
     
-    // раскрашиваем доску и расставляем шашки
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            // определяем координаты ячейки
             int y = j * cellWidth;
             if (j > 3) y += 1;  // для сдвига из-за line-view
             UIView* cell = [[UIView alloc] initWithFrame:CGRectMake(i * cellWidth, y, cellWidth, cellWidth)];
             cell.tag = ARViewTypeCell;
             
-            /* cell.backgroundColor = [UIColor whiteColor];
-            if (i % 2 == j % 2) cell.backgroundColor = self.darkCellColour; */
             cell.backgroundColor = i % 2 == j % 2 ? self.darkCellColour : [UIColor whiteColor];
             
             [chessboard addSubview:cell];
             [self.chessboardViews addObject:cell];
             
-            // checkers
-            // !!!короче судя по всему сравнение со "своим" цветом не работает!!!
-            // НУ КОНЕЧНО НАСТЯ ВЕДЬ ЭТО ОБЪЕКТЫ, ИХ ТАК СРАВНИВАТЬ НЕЛЬЗЯ
             if ([cell.backgroundColor isEqual:self.darkCellColour] && j != 3 && j != 4) {
                 UIView* checker = [[UIView alloc] initWithFrame:CGRectMake(i * cellWidth + checkerIndent, y + checkerIndent,
                                                                            checkerWidth, checkerWidth)];
@@ -97,8 +88,6 @@ typedef enum {
             }
         }
     }
-    
-    // NSLog(@"frame = %@", NSStringFromCGRect(self.view.frame));
     
 }
 
